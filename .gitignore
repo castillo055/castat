@@ -1,0 +1,9 @@
+.idea/
+.ccls/
+CMakeFiles/
+
+castat
+
+*.o
+
+Makefile

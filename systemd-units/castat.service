@@ -1,0 +1,10 @@
+[Unit]
+Description=Castle's Status Bar for DWM
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+ExecStart=/home/victor/repos/local/castat/castat
+[Install]
+WantedBy=default.target
