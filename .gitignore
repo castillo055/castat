@@ -1,9 +1,11 @@
 .idea/
-.ccls/
+.ccls
 CMakeFiles/
 
 castat
 
 *.o
+*.cbp
 
+CMakeCache.txt
 Makefile
