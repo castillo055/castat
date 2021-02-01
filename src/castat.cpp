@@ -148,7 +148,7 @@ static void refresh_status(const unsigned long dt, timer* t){
 		Cache* c = &cache[i];
 		c->module_path = m->path;
 
-		string module_path  = m->path;
+		string module_path(string(modules_dir) + m->path);
 
 		if (!c->init || ((c->age += deltaT) >= m->period) && c->result.wait_for(chrono::seconds(0)) == future_status::ready) {
 		    c->init = true;

@@ -7,17 +7,17 @@ static const char delim[] = "  ";
 
 static const Module modules[] = {
 	/* path, 	period */
-	{"/home/victor/.config/dwmstatus/00_server-list", 	5.0},
-	{"/home/victor/.config/dwmstatus/55_prgs", 		0.1},
-	{"/home/victor/.config/dwmstatus/01_padd-status", 	3.0},
-	{"/home/victor/.config/dwmstatus/09_mpd-status", 	1.0},
-	{"/home/victor/.config/dwmstatus/90_brightness", 	0.03},
-	{"/home/victor/.config/dwmstatus/91_volume", 		0.2},
-	{"/home/victor/.config/dwmstatus/95_comms", 		3.0},
-	{"/home/victor/.config/dwmstatus/96_cpustat", 		2.0},
-	{"/home/victor/.config/dwmstatus/98_memstat", 		0.2},
-	//{"/home/victor/.config/dwmstatus/97_coretemp", 		2.0},
-	{"/home/victor/.config/dwmstatus/99_battery", 		0.1},
-	{"/home/victor/.config/dwmstatus/ZZ_date", 		1.0},
+	{"00_server-list", 	5.0},
+	{"55_prgs", 		0.1},
+	{"01_padd-status", 	3.0},
+	{"09_mpd-status", 	1.0},
+	{"90_brightness", 	0.03},
+	{"91_volume", 		0.2},
+	{"95_comms", 		3.0},
+	{"96_cpustat", 		2.0},
+	{"98_memstat", 		0.2},
+	//{"97_coretemp", 		2.0},
+	{"99_battery", 		0.1},
+	{"ZZ_date", 		1.0},
 
 };
