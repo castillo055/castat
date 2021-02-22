@@ -1,5 +1,5 @@
 
-static const char modules_dir[] = "/home/victor/.config/dwmstatus/";
+static const char modules_dir[] = "/home/victor/repos/public/castat-modules/";
 
 static const char delim[] = "  ";
 //static const char delim[] = "^f3^^r0,0,2,26^^f3^";
