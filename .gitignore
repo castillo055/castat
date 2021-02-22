@@ -1,6 +1,7 @@
 .idea/
 .ccls
 CMakeFiles/
+cmake-build-debug/
 
 castat
 
@@ -9,3 +10,5 @@ castat
 
 CMakeCache.txt
 Makefile
+
+cmake_install.cmake
