@@ -1,14 +1,11 @@
 #include <chrono>
-#include <thread>
 #include <iostream>
-#include <fstream>
-#include <alsa/asoundlib.h>
-#include <filesystem>
 #include "ctpl_stl.h"
 #include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xatom.h>
 #include <boost/program_options.hpp>
+
+#include <csignal>
+#include <ctime>
 
 using namespace std;
 namespace po = boost::program_options;
@@ -17,6 +14,8 @@ static Display *dpy;
 static int screen;
 static Window root;
 
+static timer_t rt_timer;
+
 #define LENGTH(X) 	(sizeof X / sizeof X[0])
 
 typedef struct {
@@ -24,13 +23,13 @@ typedef struct {
 	double period;
 } Module;
 
-typedef struct {
-	char cache[8096];
+typedef struct Cache {
+	char cache[8096]{};
 	double age = 0.0;
 	string module_path;
 	bool init = false;
 	future<void> result;
-	unsigned long exec_time;
+	unsigned long exec_time{};
 } Cache;
 
 #include "../config.h"
@@ -69,50 +68,6 @@ static string run(string cmd) {
 	return data;
 }
 
-int getALSAVolume(){
-	long min, max;
-	snd_mixer_t *handle;
-	snd_mixer_selem_id_t *sid;
-	const char *card = "default";
-	const char *selem_name = "Master";
-
-	snd_mixer_open(&handle, 0);
-	snd_mixer_attach(handle, card);
-	snd_mixer_selem_register(handle, NULL, NULL);
-	snd_mixer_load(handle);
-
-	snd_mixer_selem_id_alloca(&sid);
-	snd_mixer_selem_id_set_index(sid, 0);
-	snd_mixer_selem_id_set_name(sid, selem_name);
-	snd_mixer_elem_t* elem = snd_mixer_find_selem(handle, sid);
-
-	snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
-	long vol;
-	snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, &vol);
-
-	snd_mixer_close(handle);
-
-	return (int)(vol*100/max);
-}
-int getBrightness(){
-	string curBr;
-	string maxBr;
-
-	ifstream brightness("/sys/class/backlight/intel_backlight/brightness");
-	ifstream max_brightness("/sys/class/backlight/intel_backlight/max_brightness");
-
-	getline(brightness, curBr);
-	getline(max_brightness, maxBr);
-
-	brightness.close();
-	max_brightness.close();
-
-	int current = stoi(curBr);
-	int max = stoi(maxBr);
-
-	return current*100/max;
-}
-
 string full_cache;
 static void set_bar(const string str){
 	if(str == full_cache)
@@ -137,7 +92,7 @@ void refresh_module(string module_path, int id) {
     }
 }
 
-static void refresh_status(const unsigned long dt, timer* t){
+static void refresh_status(const unsigned long dt){
     const Module *m;
 	int i;
 	string str;
@@ -162,6 +117,10 @@ static void refresh_status(const unsigned long dt, timer* t){
 
 	str.erase(remove(str.begin(), str.end(), '\n'), str.end());
     set_bar(str);
+}
+
+static void update(int i) {
+    refresh_status(30);
 }
 
 int main(int argc, char* argv[]){
@@ -190,23 +149,28 @@ int main(int argc, char* argv[]){
 	screen = DefaultScreen(dpy);
 	root = RootWindow(dpy, screen);
 
-	timer t;
-	chrono::milliseconds delay(30);
+    struct sigevent sev = {
+            .sigev_value = { .sival_ptr = &rt_timer },
+            .sigev_signo  = SIGALRM,
+            .sigev_notify = SIGEV_SIGNAL
+    };
+	if (timer_create(CLOCK_REALTIME, &sev, &rt_timer) == -1) exit(2);
+	signal(SIGALRM, update);
 
-	unsigned long dt;
+	const struct itimerspec rt_timer_val = {
+	        .it_interval = {
+	                .tv_sec = 0,
+	                .tv_nsec = 30000000
+	        },
+	        .it_value = {
+	                .tv_sec = 0,
+	                .tv_nsec = 30000000
+	        }
+	};
+	if (timer_settime(rt_timer, 0, &rt_timer_val, nullptr) == -1) exit(3);
+
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
-	while(true){
-		this_thread::sleep_for(delay);
-		dt = t.millis_elapsed();
-		if(dt>=30){
-            //t.reset();
-            refresh_status(dt, &t);
-			//cout << t.millis_elapsed() << endl;
-			t.reset();
-		}
-	}
+    while(true) sleep(1000);
 #pragma clang diagnostic pop
-
-	return 0;
 }

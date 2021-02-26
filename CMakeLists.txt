@@ -12,6 +12,7 @@ set_target_properties(castat PROPERTIES
         CXX_EXTENSIONS OFF)
 
 target_link_libraries(castat -lcipcomms)
+target_link_libraries(castat -lrt)
 target_link_libraries(castat -L/home/victor/repos/inhouse/cipcomms)
 TARGET_LINK_LIBRARIES(castat Threads::Threads asound X11)
 
