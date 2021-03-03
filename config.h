@@ -15,7 +15,7 @@ static const Module modules[] = {
 	{"91_volume", 		0.2},
 	{"95_comms", 		3.0},
 	{"96_cpustat", 		2.0},
-	{"98_memstat", 		0.2},
+	{"98_memstat", 		1.0},
 	//{"97_coretemp", 		2.0},
 	{"99_battery", 		0.1},
 	{"ZZ_date", 		1.0},
