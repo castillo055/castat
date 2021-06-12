@@ -12,3 +12,5 @@ CMakeCache.txt
 Makefile
 
 cmake_install.cmake
+
+config.h

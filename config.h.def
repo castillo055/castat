@@ -1,5 +1,5 @@
 
-static const char modules_dir[] = "/home/victor/repos/public/castat-modules/";
+static const char modules_dir[] = "/home/castle/repos/public/castat-modules/";
 
 static const char delim[] = "  ";
 //static const char delim[] = "^f3^^r0,0,2,26^^f3^";
@@ -16,7 +16,7 @@ static const Module modules[] = {
 	{"95_comms", 		3.0},
 	{"96_cpustat", 		2.0},
 	{"98_memstat", 		1.0},
-	//{"97_coretemp", 		2.0},
+	{"97_coretemp", 		2.0},
 	{"99_battery", 		0.1},
 	{"ZZ_date", 		1.0},
 
