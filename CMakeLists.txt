@@ -11,9 +11,9 @@ add_executable(castat ${SOURCE_FILES})
 set_target_properties(castat PROPERTIES
         CXX_EXTENSIONS OFF)
 
-target_link_libraries(castat -lcipcomms)
+#target_link_libraries(castat -lcipcomms)
 target_link_libraries(castat -lrt)
-target_link_libraries(castat -L/home/victor/repos/inhouse/cipcomms)
+#target_link_libraries(castat -L/home/victor/repos/inhouse/cipcomms)
 TARGET_LINK_LIBRARIES(castat Threads::Threads asound X11)
 
 FIND_PACKAGE( Boost 1.40 COMPONENTS program_options REQUIRED )
